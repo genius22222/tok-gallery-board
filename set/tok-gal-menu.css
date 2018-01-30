@@ -1,0 +1,58 @@
+.tok_imagebox{
+    position: relative;
+    display: block;
+    min-width: 200px;
+    margin-top: 10px;
+    min-height: 200px;
+    border: 1px dashed #333332;
+}
+.tok_imagebox::after{
+    content: "";
+    display: table;
+    clear: both;
+}
+.tok_image{
+    display: inline-block;
+    position: relative;
+    float: left;
+    width: 180px;
+    height: 180px;
+    margin: 10px;
+}
+.tok_image .image{
+    background: #333332;
+    width: 100%;
+    height: 100%;
+}
+.tok_image input[type='text']{
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    font-size: 9px;
+    height: 10px;
+    padding: 1px;
+    border: 0;
+    background: #ffffff;
+    color: #333332;
+
+}
+.tok_add_imagebox_button{
+    cursor: pointer;
+    box-sizing: border-box;
+    display: block;
+    margin-top: 20px;
+    width: 200px;
+    height: 200px;
+    padding: 75px;
+    background: #333332;
+}
+.tok_add_imagebox_button:hover{
+    opacity: 0.7;
+}
+.tok_add_imagebox_button:active{
+    opacity: 0.85;
+}
+.tok_add_imagebox_button img{
+    width: 50px;
+    height: 50px;
+}

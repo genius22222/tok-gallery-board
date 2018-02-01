@@ -36,6 +36,16 @@
     color: #333332;
 
 }
+.tok_close_button{
+    background: url("close.png") no-repeat;
+    width: 49px;
+    height: 49px;
+    font-size: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+}
 .tok_add_imagebox_button{
     cursor: pointer;
     box-sizing: border-box;

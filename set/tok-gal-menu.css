@@ -1,4 +1,4 @@
-.tok_imagebox{
+.tok_hag_imagebox{
     position: relative;
     display: block;
     min-width: 200px;
@@ -6,7 +6,7 @@
     min-height: 200px;
     border: 1px dashed #333332;
 }
-.tok_imagebox::after{
+.tok_hag_imagebox::after{
     content: "";
     display: table;
     clear: both;
@@ -36,7 +36,25 @@
     color: #333332;
 
 }
-.tok_close_button{
+.tok_hag_add_button{
+    width: 50px;
+    height: 180px;
+    background: #333332;
+    color: #ffffff;
+    font-size: 25px;
+    margin: 10px;
+    box-sizing: border-box;
+    padding: 0 12.5px;
+    line-height: 180px;
+    cursor: pointer;
+}
+.tok_hag_add_button:hover{
+    opacity: 0.7;
+}
+.tok_hag_add_button:active{
+    opacity: 0.85;
+}
+.tok_hag_close_button{
     background: url("close.png") no-repeat;
     width: 49px;
     height: 49px;
@@ -46,7 +64,7 @@
     right: 0;
     cursor: pointer;
 }
-.tok_add_imagebox_button{
+.tok_hag_add_imagebox_button{
     cursor: pointer;
     box-sizing: border-box;
     display: block;
@@ -56,13 +74,13 @@
     padding: 75px;
     background: #333332;
 }
-.tok_add_imagebox_button:hover{
+.tok_hag_add_imagebox_button:hover{
     opacity: 0.7;
 }
-.tok_add_imagebox_button:active{
+.tok_hag_add_imagebox_button:active{
     opacity: 0.85;
 }
-.tok_add_imagebox_button img{
+.tok_hag_add_imagebox_button img{
     width: 50px;
     height: 50px;
 }

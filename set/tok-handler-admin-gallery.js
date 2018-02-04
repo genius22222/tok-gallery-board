@@ -1,68 +1,70 @@
 
-var box = [];
-var img = [];
-var counterBox = 0;
+var tok_hag_box = [0];
+var tok_hag_img = [];
+var tok_hag_counterBox = 0;
 
 // Удаление элемента из массива.
 // String value: значение, которое необходимо найти и удалить.
 // return: массив без удаленного элемента; false в противном случае.
-function removeElemArr(value, arr) {
+function tok_hag_removeElemArr(value, arr, index) {
     var x;
-    x = arr.indexOf(+value);
-    if (x === -1) return false;
+    console.log(value+' '+arr+' '+index)
+    if (index !== undefined){
+        x = value;
+    } else {
+        x = arr.indexOf(+value);
+        if (x === -1) return false;
+    }
     arr.splice(x, 1);
+
     return arr;
 }
 
 
 (function($) {
 
-   $(document).ready(function () {
-       $('.tok_add_imagebox_button').click(function () {
-           addC('box');
-       });
+       $('.tok_hag_add_button').bind('click', tok_hag_getDisplay);
+       function tok_hag_getDisplay() {
+           $('.wrapper-box').empty();
+           $('.wrapper-box').html('<div id="n0" class="tok_hag_imagebox"><div id="box_start_0" class="box_start"></div><div class="tok_hag_add_button">+</div></div>');
 
-       function addBox() {
-           var currentId;
-           var currentBox;
-           var newId;
-           var deleteButton;
-           currentId = 'n'+(box.length - 1);
-           currentBox = '#'+(currentId);
-           newId = 'n'+box.length;
-           currentHtml = '<div id="'+newId+'" class="tok_imagebox"><div id="tki0" class="tok_image"><div class="image"></div><input type="text" id="tok-link"></div><div class="tok_close_button">'+box.length+'</div></div>';
-           $(currentHtml).insertAfter(currentBox); //Выводим новый бокс с изображениями
-           deleteButton = document.getElementById(newId); //Получаем новый элемент по id
-           deleteButton = deleteButton.childNodes[1]; //Получаем его кнопку удаления
+           var currentBoxHtml;
+           var currentBoxId = '#n0';
+           var currentImgHtml;
+           var currentImgId;
 
-           $(deleteButton).bind('click', function (event) { //Обработчик кнопки удаления, для всех разный
-               delButElem = event.target; //Получаем нажатую кнопку удаления
-               BoxElemId = $(delButElem).html(); //Получаем её содержимое, туда мы сохранили id бокса изображений
-               deleteBox(BoxElemId); //Вызываем функцию удаления бокса изображений
+           tok_hag_box.forEach(function(itemBox, iBox, tok_hag_box){
+               if (itemBox !== 0) {
+                   currentBoxHtml = '<div id="n'+itemBox+'" class="tok_hag_imagebox"><div id="box_start_'+itemBox+'" class="box_start"></div><div class="tok_hag_add_button">+</div><div class="tok_hag_close_button"></div></div>';
+                   $(currentBoxHtml).insertAfter(currentBoxId);
+                   currentBoxId = '#n'+itemBox;
+               }
            });
-       }
-       function deleteBox(elem) {
-           if (elem !== undefined){
-               x = removeElemArr(elem, box);
-               if (x !== false) box = x;
-           } else {
-               console.log('deleteBox: Elem is undefined!');
-           }
-       }
-       function addC(what, boxId, pic) {
-           if (what === 'box'){
-               box.push(counterBox); //Добавляем id из img
-               img.push(counterBox); //Добавляем нулевой элемент в img
-               img[counterBox] = []; //Инициализируем элемент массива как массив
-               addBox(); //Добавляем новый бокс
+           currentBoxId = '#n0';
+           tok_hag_img.forEach(function (itemImg, iImg, tok_hag_img) {
+               currentBoxId = 'n'+itemImg[0];
+               console.log(currentBoxId);
+               var lastImage = document.getElementById(currentBoxId);
+               var currentBoxStart = '#box_start_'+itemImg[0];
+               lastImage = lastImage.getElementsByClassName('tok_hag_images');
+               currentImgHtml = '<div id="image_'+iImg+'" class="tok_hag_images"><input id="tok_hag_imgBoxId" type="hidden" value="'+itemImg[0]+'"><input id="tok_hag_img" type="hidden" value="'+itemImg[1]+'"><input id="tok_hag_link" type="hidden" value="'+itemImg[2]+'"><input id="tok_hag_control" type="hidden" value="'+itemImg[3]+'"></div>';
+               console.log(lastImage);
+               console.log(currentBoxStart);
+               if (lastImage.length !==0){
+                   console.log(1);
+                   lastImage = lastImage[lastImage.length - 1];
+                   $(currentImgHtml).insertAfter(lastImage);
+               } else {
+                   console.log(2);
+                   $(currentImgHtml).insertAfter(currentBoxStart);
+               }
+           });
+           currentBoxHtml = '';
+           currentBoxId = '#n0';
+           currentImgHtml = '';
+           currentImgId = '';
 
-
-               counterBox++;
-           } else if((what === 'img') && (boxId !== undefined) && (pic !== undefined)){
-               img[boxId].push(pic); //Добавляем изображения в инициализированный массив
-           } else console.log('"what" or "boxId" or "pic" is empty!');
        }
-   });
 })( jQuery );
 
 

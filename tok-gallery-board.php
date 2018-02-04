@@ -41,9 +41,14 @@ function tok_add_theme_menu(){
                 do_settings_fields('tok_gallery_board', 'tok_gallery_board_select_image');
 				?>
                 <input type="hidden" name="tok_gallery_board_send_form_controller" id="tok_gallery_board_send_form_controller" value="ok">
-				<div id="n0" class="tok_imagebox"><div id="tki0" class="tok_image"><div class="image"></div><input type="text" id="tok-link"></div></div>
-				<div class="tok_add_imagebox_button"><img src="<?php echo plugins_url('/set/menu-plus.png', __FILE__) ?>"></div>
-
+                <div class="wrapper-box">
+                    <div id="n0" class="tok_hag_imagebox">
+                        <div id="box_start_0" class="box_start"></div>
+                        <div class="tok_hag_add_button">+</div>
+                    </div>
+				
+                </div>
+                <div class="tok_hag_add_imagebox_button"><img src="<?php echo plugins_url('/set/menu-plus.png', __FILE__) ?>"></div>
 				<?php
 				submit_button();
 				?>

@@ -54,7 +54,7 @@
 .tok_hag_add_button:active{
     opacity: 0.85;
 }
-.tok_hag_close_button{
+.tok_hag_delete_button{
     background: url("close.png") no-repeat;
     width: 49px;
     height: 49px;

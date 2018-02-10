@@ -21,9 +21,44 @@ function tok_hag_removeElemArr(value, arr, index) {
 }
 
 
+
 (function($) {
 
-       $('.tok_hag_add_button').bind('click', tok_hag_getDisplay);
+       $(document).ready(function () {
+           $('.tok_hag_add_imagebox_button').bind('click', tok_hag_add_imgBox);
+
+       });
+
+
+       function tok_hag_add_imgBox(){
+           tok_hag_box.push(tok_hag_box[tok_hag_box.length - 1] + 1);
+           tok_hag_getDisplay();
+       }
+       function tok_hag_deleteBox(){
+           var boxId = this.parentNode.id;
+           boxId = boxId.replace(/[^0-9]/gim,'');
+           boxId = +boxId;
+           tok_hag_removeElemArr(boxId, tok_hag_box);
+           //Удалим все связанные изображения
+           tok_hag_img.forEach(function (itemImg, iImg, tok_hag_img) {
+               if (itemImg[1] === boxId){
+                   tok_hag_removeElemArr('', tok_hag_img, iImg);
+               }
+           });
+           //Упорядочим массив с боксами
+           tok_hag_box.forEach(function (itemBox, iBox, tok_hag_box) {
+               if (itemBox > boxId){
+                   //Перензначим боксы изображениям
+                   tok_hag_img.forEach(function (itemImg, iImg, tok_hag_img) {
+                       if (itemImg[1] === itemBox) {
+                           itemImg[1] = itemImg[1] - 1;
+                       }
+                   });
+                   tok_hag_box[iBox] = itemBox - 1;
+               }
+           });
+           tok_hag_getDisplay();
+       }
        function tok_hag_getDisplay() {
            $('.wrapper-box').empty();
            $('.wrapper-box').html('<div id="n0" class="tok_hag_imagebox"><div id="box_start_0" class="box_start"></div><div class="tok_hag_add_button">+</div></div>');
@@ -35,7 +70,7 @@ function tok_hag_removeElemArr(value, arr, index) {
 
            tok_hag_box.forEach(function(itemBox, iBox, tok_hag_box){
                if (itemBox !== 0) {
-                   currentBoxHtml = '<div id="n'+itemBox+'" class="tok_hag_imagebox"><div id="box_start_'+itemBox+'" class="box_start"></div><div class="tok_hag_add_button">+</div><div class="tok_hag_close_button"></div></div>';
+                   currentBoxHtml = '<div id="n'+itemBox+'" class="tok_hag_imagebox"><div id="box_start_'+itemBox+'" class="box_start"></div><div class="tok_hag_add_button">+</div><div class="tok_hag_delete_button"></div></div>';
                    $(currentBoxHtml).insertAfter(currentBoxId);
                    currentBoxId = '#n'+itemBox;
                }
@@ -64,6 +99,7 @@ function tok_hag_removeElemArr(value, arr, index) {
            currentImgHtml = '';
            currentImgId = '';
 
+           $('.tok_hag_delete_button').bind('click', tok_hag_deleteBox);
        }
 })( jQuery );
 

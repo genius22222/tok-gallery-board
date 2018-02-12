@@ -120,6 +120,26 @@ function tok_hag_removeElemArr(value, arr, index) {
 
 
 
+       function tok_hag_sortArray(arr) {
+           if (!(arr === undefined) || !(arr.length === 0)){
+               var count = arr.length - 1;
+               var buffer;
+               for (var i = 0; i < count; i++){
+                  for (var j = 0; j < count; j++){
+                       if (arr[j] > arr[j + 1]) {
+                           buffer = arr[j];
+                           arr[j] = arr[j + 1];
+                           arr[j + 1] = buffer;
+                       }
+                   }
+               }
+               return arr;
+           } else {
+               console.log('Функция сортировки массива: массив пуст или ещё не создан!');
+           }
+       }
+
+
 
        function tok_hag_getDisplay() {
            $('.wrapper-box').empty();
@@ -129,6 +149,7 @@ function tok_hag_removeElemArr(value, arr, index) {
            var currentBoxId = '#n0';
            var currentImgHtml;
            var currentImgId;
+           var cacheImageArr = [];
 
            tok_hag_box.forEach(function(itemBox, iBox, tok_hag_box){
                if (itemBox !== 0) {
@@ -138,7 +159,18 @@ function tok_hag_removeElemArr(value, arr, index) {
                }
            });
            currentBoxId = '#n0';
-           //Тут надо написать код вывода изображений
+
+           tok_hag_box.forEach(function (itemBox, iBox, tok_hag_box) {
+               tok_hag_img.forEach(function (itemImg, iImg, tok_hag_img) {
+                   if (itemBox === tok_hag_img[iImg][1]){
+                       cacheImageArr.push(itemImg);
+                   }
+
+               });
+           });
+
+
+
            currentBoxHtml = '';
            currentBoxId = '#n0';
            currentImgHtml = '';

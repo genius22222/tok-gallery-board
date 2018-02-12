@@ -8,14 +8,13 @@ var tok_hag_counterBox = 0;
 // return: массив без удаленного элемента; false в противном случае.
 function tok_hag_removeElemArr(value, arr, index) {
     var x;
-    console.log(value+' '+arr+' '+index)
     if (index !== undefined){
-        x = value;
+        x = Number(index);
     } else {
-        x = arr.indexOf(+value);
+        x = arr.indexOf(value);
         if (x === -1) return false;
     }
-    arr.splice(x, 1);
+    console.log(arr.splice(x, 1));
 
     return arr;
 }
@@ -26,39 +25,102 @@ function tok_hag_removeElemArr(value, arr, index) {
 
        $(document).ready(function () {
            $('.tok_hag_add_imagebox_button').bind('click', tok_hag_add_imgBox);
-
+           $('.tok_hag_add_button').bind('click', tok_hag_addImg);
        });
+
+
+
+
 
 
        function tok_hag_add_imgBox(){
            tok_hag_box.push(tok_hag_box[tok_hag_box.length - 1] + 1);
            tok_hag_getDisplay();
        }
+
+
+
+
        function tok_hag_deleteBox(){
            var boxId = this.parentNode.id;
+           var cacheArr = [];
            boxId = boxId.replace(/[^0-9]/gim,'');
            boxId = +boxId;
            tok_hag_removeElemArr(boxId, tok_hag_box);
+
            //Удалим все связанные изображения
            tok_hag_img.forEach(function (itemImg, iImg, tok_hag_img) {
                if (itemImg[1] === boxId){
-                   tok_hag_removeElemArr('', tok_hag_img, iImg);
+                   cacheArr.push(iImg);
                }
            });
+           var counterDeleteEl = 0;
+           cacheArr.forEach(function (itemCacheArr, iCacheArr, cacheArr) {
+               tok_hag_removeElemArr('', tok_hag_img, cacheArr[iCacheArr] - counterDeleteEl);
+               counterDeleteEl++;
+           });
+
            //Упорядочим массив с боксами
+           cacheArr = []; //Очищаем временный массив
            tok_hag_box.forEach(function (itemBox, iBox, tok_hag_box) {
                if (itemBox > boxId){
-                   //Перензначим боксы изображениям
-                   tok_hag_img.forEach(function (itemImg, iImg, tok_hag_img) {
-                       if (itemImg[1] === itemBox) {
-                           itemImg[1] = itemImg[1] - 1;
-                       }
-                   });
-                   tok_hag_box[iBox] = itemBox - 1;
+                   cacheArr.push(itemBox); //Получаем id элментов, которые нужно сдвинуть
                }
            });
+           cacheArr.forEach(function (itemCacheArr, iCacheArr, cacheArr) {
+               var currentBoxId = itemCacheArr - 1;
+               tok_hag_box.forEach(function (itemBox, iBox, tok_hag_box) {
+                   if (tok_hag_box[iBox] === itemCacheArr) {
+                       tok_hag_box[iBox] = currentBoxId;
+                   }
+               });
+               tok_hag_img.forEach(function (itemImg, iImg, tok_hag_img) {
+                   if (tok_hag_img[iImg][1] === itemCacheArr){
+                       tok_hag_img[iImg][1] = currentBoxId;
+                       tok_hag_img[iImg][4] = tok_hag_img[iImg][0] + '&' + tok_hag_img[iImg][1] + '&' + tok_hag_img[iImg][2] + '&' + tok_hag_img[iImg][3];
+                   }
+               });
+           });
+
            tok_hag_getDisplay();
        }
+
+
+
+
+       function tok_hag_addImg(){
+           var boxId = this.parentNode.id;
+           var haveimages = false;
+           var lastImage = undefined;
+           var currentImage = [];
+           boxId = boxId.replace(/[^0-9]/gim,'');
+           boxId = +boxId;
+
+           tok_hag_img.forEach(function (itemImg, iImg, tok_hag_img) {
+               if (boxId === itemImg[1]){
+                   lastImage = itemImg;
+               }
+           });
+           if (lastImage === undefined){
+               currentImage[0] = 0;
+               currentImage[1] = boxId;
+               currentImage[2] = 'none';
+               currentImage[3] = 'none';
+               currentImage[4] = currentImage[0]+'&'+currentImage[1]+'&'+currentImage[2]+'&'+currentImage[3];
+           } else {
+               currentImage[0] = lastImage[0] + 1;
+               currentImage[1] = boxId;
+               currentImage[2] = 'none';
+               currentImage[3] = 'none';
+               currentImage[4] = currentImage[0]+'&'+currentImage[1]+'&'+currentImage[2]+'&'+currentImage[3];
+           }
+           tok_hag_img.push(currentImage);
+           tok_hag_getDisplay();
+       }
+
+
+
+
        function tok_hag_getDisplay() {
            $('.wrapper-box').empty();
            $('.wrapper-box').html('<div id="n0" class="tok_hag_imagebox"><div id="box_start_0" class="box_start"></div><div class="tok_hag_add_button">+</div></div>');
@@ -76,30 +138,14 @@ function tok_hag_removeElemArr(value, arr, index) {
                }
            });
            currentBoxId = '#n0';
-           tok_hag_img.forEach(function (itemImg, iImg, tok_hag_img) {
-               currentBoxId = 'n'+itemImg[0];
-               console.log(currentBoxId);
-               var lastImage = document.getElementById(currentBoxId);
-               var currentBoxStart = '#box_start_'+itemImg[0];
-               lastImage = lastImage.getElementsByClassName('tok_hag_images');
-               currentImgHtml = '<div id="image_'+iImg+'" class="tok_hag_images"><input id="tok_hag_imgBoxId" type="hidden" value="'+itemImg[0]+'"><input id="tok_hag_img" type="hidden" value="'+itemImg[1]+'"><input id="tok_hag_link" type="hidden" value="'+itemImg[2]+'"><input id="tok_hag_control" type="hidden" value="'+itemImg[3]+'"></div>';
-               console.log(lastImage);
-               console.log(currentBoxStart);
-               if (lastImage.length !==0){
-                   console.log(1);
-                   lastImage = lastImage[lastImage.length - 1];
-                   $(currentImgHtml).insertAfter(lastImage);
-               } else {
-                   console.log(2);
-                   $(currentImgHtml).insertAfter(currentBoxStart);
-               }
-           });
+           //Тут надо написать код вывода изображений
            currentBoxHtml = '';
            currentBoxId = '#n0';
            currentImgHtml = '';
            currentImgId = '';
 
            $('.tok_hag_delete_button').bind('click', tok_hag_deleteBox);
+           $('.tok_hag_add_button').bind('click', tok_hag_addImg);
        }
 })( jQuery );
 

@@ -14,7 +14,7 @@ function tok_hag_removeElemArr(value, arr, index) {
         x = arr.indexOf(value);
         if (x === -1) return false;
     }
-    console.log(arr.splice(x, 1));
+    arr.splice(x, 1);
 
     return arr;
 }
@@ -149,7 +149,6 @@ function tok_hag_removeElemArr(value, arr, index) {
            var currentBoxId = '#n0';
            var currentImgHtml;
            var currentImgId;
-           var cacheImageArr = [];
 
            tok_hag_box.forEach(function(itemBox, iBox, tok_hag_box){
                if (itemBox !== 0) {
@@ -162,19 +161,21 @@ function tok_hag_removeElemArr(value, arr, index) {
 
            tok_hag_box.forEach(function (itemBox, iBox, tok_hag_box) {
                tok_hag_img.forEach(function (itemImg, iImg, tok_hag_img) {
-                   if (itemBox === tok_hag_img[iImg][1]){
-                       cacheImageArr.push(itemImg);
+                   if (itemImg[1] === itemBox){
+                       if (itemImg[0] === 0){
+                           currentImgId = '#box_start_'+itemBox;
+                       } else {
+                           currentImgId = '#tok_image_n'+itemBox+'_'+(itemImg[0] - 1);
+                       }
+                       var fixHangLink = (itemImg[2] !== 'none') ? "'"+itemImg[2]+"'" : '';
+                       currentImgHtml = '<div id="tok_image_n'+itemBox+'_'+itemImg[0]+'" class="tok_image"><div class="image" style="background-image: url('+fixHangLink+');"></div><input type="text" placeholder="link location..."><input id="tok_hag_img_serial_number" type="hidden" value="'+itemImg[0]+'"><input id="tok_hag_box_number" type="hidden" value="'+itemImg[1]+'"><input id="tok_hag_image_url" type="hidden" value="'+itemImg[2]+'"><input id="tok_hag_link" type="hidden" value="'+itemImg[3]+'"><input id="tok_hag_summ" type="hidden" value="'+itemImg[4]+'"></div>';
+                       $(currentImgHtml).insertAfter(currentImgId);
+                       currentImgHtml = '';
+                       currentImgId = '';
                    }
-
                });
            });
 
-
-
-           currentBoxHtml = '';
-           currentBoxId = '#n0';
-           currentImgHtml = '';
-           currentImgId = '';
 
            $('.tok_hag_delete_button').bind('click', tok_hag_deleteBox);
            $('.tok_hag_add_button').bind('click', tok_hag_addImg);

@@ -36,6 +36,15 @@
     color: #333332;
 
 }
+.tok_image .tok_hag_delete{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: url("min-close.png") no-repeat;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
 .tok_hag_add_button{
     width: 50px;
     height: 180px;

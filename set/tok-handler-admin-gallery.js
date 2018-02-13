@@ -24,6 +24,7 @@ function tok_hag_removeElemArr(value, arr, index) {
 (function($) {
 
        $(document).ready(function () {
+           tok_hag_getOption();
            $('.tok_hag_add_imagebox_button').bind('click', tok_hag_add_imgBox);
            $('.tok_hag_add_button').bind('click', tok_hag_addImg);
        });
@@ -141,6 +142,38 @@ function tok_hag_removeElemArr(value, arr, index) {
 
 
 
+
+       function tok_hag_edit_imageLink() {
+           alert(this.parentNode);
+       }
+
+
+
+       function tok_hag_deleteImage(){
+           var currentImage = ((this.parentNode.id).match(/[0-9]_[0-9]/))[0];
+           var currentImageId = +(currentImage.split(/_/))[1];
+           var currentImageBox = +(currentImage.split(/_/))[0];
+           var i = 0;
+           tok_hag_img.forEach(function (itemImg, iImg, tok_hag_img) {
+               if ((currentImageId === itemImg[0]) && (currentImageBox === itemImg[1])){
+                   tok_hag_removeElemArr('', tok_hag_img, iImg);
+                   return false;
+               }
+           });
+
+           //Сортируем массив изображений в боксе
+           tok_hag_img.forEach(function (itemImg, iImg, tok_hag_img) {
+               if (itemImg[1] === currentImageBox) {
+                   if (itemImg[0] > currentImageId) {
+                       itemImg[0] = itemImg[0] - 1;
+                   }
+               }
+           });
+
+           tok_hag_getDisplay();
+       }
+
+
        function tok_hag_getDisplay() {
            $('.wrapper-box').empty();
            $('.wrapper-box').html('<div id="n0" class="tok_hag_imagebox"><div id="box_start_0" class="box_start"></div><div class="tok_hag_add_button">+</div></div>');
@@ -168,7 +201,7 @@ function tok_hag_removeElemArr(value, arr, index) {
                            currentImgId = '#tok_image_n'+itemBox+'_'+(itemImg[0] - 1);
                        }
                        var fixHangLink = (itemImg[2] !== 'none') ? "'"+itemImg[2]+"'" : '';
-                       currentImgHtml = '<div id="tok_image_n'+itemBox+'_'+itemImg[0]+'" class="tok_image"><div class="image" style="background-image: url('+fixHangLink+');"></div><input type="text" placeholder="link location..."><input id="tok_hag_img_serial_number" type="hidden" value="'+itemImg[0]+'"><input id="tok_hag_box_number" type="hidden" value="'+itemImg[1]+'"><input id="tok_hag_image_url" type="hidden" value="'+itemImg[2]+'"><input id="tok_hag_link" type="hidden" value="'+itemImg[3]+'"><input id="tok_hag_summ" type="hidden" value="'+itemImg[4]+'"></div>';
+                       currentImgHtml = '<div id="tok_image_n'+itemBox+'_'+itemImg[0]+'" class="tok_image"><div class="image" style="background-image: url('+fixHangLink+');"></div><input type="text" placeholder="link location..."><div class="tok_hag_delete"></div><input id="tok_hag_img_serial_number" type="hidden" value="'+itemImg[0]+'"><input id="tok_hag_box_number" type="hidden" value="'+itemImg[1]+'"><input id="tok_hag_image_url" type="hidden" value="'+itemImg[2]+'"><input id="tok_hag_link" type="hidden" value="'+itemImg[3]+'"><input id="tok_hag_summ" type="hidden" value="'+itemImg[4]+'"></div>';
                        $(currentImgHtml).insertAfter(currentImgId);
                        currentImgHtml = '';
                        currentImgId = '';
@@ -179,6 +212,26 @@ function tok_hag_removeElemArr(value, arr, index) {
 
            $('.tok_hag_delete_button').bind('click', tok_hag_deleteBox);
            $('.tok_hag_add_button').bind('click', tok_hag_addImg);
+           $('.tok_hag_delete').bind('click', tok_hag_deleteImage);
+
+           tok_hag_writeOption();
+       }
+       function tok_hag_writeOption() {
+           var summArr = [];
+           var jsonEn;
+           summArr[0] = tok_hag_box;
+           summArr[1] = tok_hag_img;
+
+           jsonEn = JSON.stringify(summArr);
+           $('#tok_gallery_board_select_settings').val('');
+           $('#tok_gallery_board_select_settings').val(jsonEn);
+       }
+       function tok_hag_getOption() {
+           var summArr = [];
+           summArr = JSON.parse($('#tok_gallery_board_select_settings').val());
+           tok_hag_box = summArr[0];
+           tok_hag_img = summArr[1];
+           tok_hag_getDisplay();
        }
 })( jQuery );
 

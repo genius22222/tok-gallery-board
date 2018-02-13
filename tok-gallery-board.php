@@ -57,7 +57,7 @@ function tok_add_theme_menu(){
 		<?php
 	}
 	function tok_gallery_board_select_settings_show(){ ?>
-		<input type="hidden" id="tok_gallery_board_select_settings" name="tok_gallery_board_select_settings" value="<?php echo get_option('tok_gallery_board_select_settings'); ?>">
+		<input type="hidden" id="tok_gallery_board_select_settings" name="tok_gallery_board_select_settings" value='<?php echo stripslashes(get_option('tok_gallery_board_select_settings')); ?>'>
 		<?php
 	}
 }

@@ -17,6 +17,7 @@ function tok_add_theme_menu(){
 	wp_enqueue_style( 'tok_gal_menu', plugins_url('/set/tok-gal-menu.css', __FILE__), 'beta1.0' );
 	wp_enqueue_script( 'tok_handler_admin_gallery', plugins_url('/set/tok-handler-admin-gallery.js', __FILE__), array( 'jquery' ) );
 	wp_enqueue_script( 'tok_handler_admin_gallery' );
+	wp_enqueue_media();
 
 	add_menu_page('Настройка галерии PC', 'Галлерея PC', 'manage_options', 'tok_gallery_board', 'tok_gallery_board_page', '', 4);
 	function tok_gallery_board_page(){
